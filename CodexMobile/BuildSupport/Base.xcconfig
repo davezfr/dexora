@@ -1,0 +1,16 @@
+// Shared public defaults for open-source builds.
+// Real private endpoints belong in the ignored PrivateOverrides.xcconfig file.
+// Modified for Dexora self-host beta identity and public build defaults.
+
+DEXORA_CHATGPT_CALLBACK_SCHEME = dexora
+DEXORA_DEFAULT_RELAY_URL =
+SELF_HOST_DEVELOPMENT_TEAM =
+SELF_HOST_BUNDLE_ID = com.davezfr.dexora
+SELF_HOST_TESTS_BUNDLE_ID = com.davezfr.dexora.tests
+SELF_HOST_UITESTS_BUNDLE_ID = com.davezfr.dexora.uitests
+SELF_HOST_MENU_BAR_BUNDLE_ID = com.davezfr.dexora.menubar
+REVENUECAT_PUBLIC_API_KEY =
+REVENUECAT_ENTITLEMENT_NAME = Pro
+REVENUECAT_DEFAULT_OFFERING_ID = default
+
+#include? "PrivateOverrides.xcconfig"
