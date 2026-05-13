@@ -457,6 +457,10 @@ extension ContentViewModel {
             codex.lastErrorMessage = message
             return .stop
         case .rePairRequired(let message):
+            if codex.hasSavedRelaySession {
+                codex.lastErrorMessage = nil
+                return .fallbackToSaved
+            }
             codex.connectionRecoveryState = .idle
             codex.shouldAutoReconnectOnForeground = false
             codex.lastErrorMessage = message

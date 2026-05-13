@@ -100,6 +100,35 @@ final class ContentViewModelReconnectTests: XCTestCase {
         XCTAssertEqual(service.lastErrorMessage, "Your trusted Mac is offline right now.")
     }
 
+    func testPreferredReconnectURLFallsBackToSavedSessionWhenRelayTrustedIndexIsStale() async {
+        let service = makeService()
+        let viewModel = ContentViewModel()
+        let macDeviceID = "mac-\(UUID().uuidString)"
+        let relayURL = "wss://relay.local/relay"
+
+        service.trustedMacRegistry.records[macDeviceID] = CodexTrustedMacRecord(
+            macDeviceId: macDeviceID,
+            macIdentityPublicKey: Data(repeating: 19, count: 32).base64EncodedString(),
+            lastPairedAt: Date(),
+            relayURL: relayURL
+        )
+        service.lastTrustedMacDeviceId = macDeviceID
+        service.relaySessionId = "saved-session"
+        service.relayUrl = relayURL
+        service.relayMacDeviceId = macDeviceID
+        service.lastErrorMessage = "stale error"
+        service.trustedSessionResolverOverride = {
+            throw CodexTrustedSessionResolveError.rePairRequired(
+                "This iPhone is no longer trusted by the paired computer. Scan a new QR code to reconnect."
+            )
+        }
+
+        let reconnectURL = await viewModel.preferredReconnectURL(codex: service)
+
+        XCTAssertEqual(reconnectURL, "\(relayURL)/saved-session")
+        XCTAssertNil(service.lastErrorMessage)
+    }
+
     func testPreferredReconnectURLStopsWithUnsupportedRelayWithoutForcingRePair() async {
         let service = makeService()
         let viewModel = ContentViewModel()
