@@ -80,7 +80,7 @@ struct AboutDexoraView: View {
             calloutCard(
                 icon: "info.circle.fill",
                 color: .blue,
-                text: "Dexora is not an official OpenAI, Codex, or Remodex app. It exists for private beta testing and requires your own computer-side bridge."
+                text: "Dexora is an independent fork and does not represent the original Remodex author, OpenAI, Apple, or any official project. It exists for private beta testing and requires your own computer-side bridge."
             )
         }
     }
